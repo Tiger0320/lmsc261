@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<body>
+    <canvas width="600" height="600" id="canvas" style="width: 600px; height: 600px;"></canvas>
+</body>
+
+<script>
+
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const w = canvas.width, h = canvas.height;
+
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width *= dpr;
+    canvas.height *= dpr;
+    ctx.scale(dpr, dpr);
+
+    // Background
+    ctx.fillStyle = "lightblue";
+    ctx.fillRect(0, 0, w, h);
+
+
+    // Draw car function
+    function drawCar(cx, cy, scale) {
+
+        // Coordinate helper functions
+        const X = n => cx + (n - 5) * (w / 10) * scale;
+        const Y = n => cy + (n - 5) * (h / 10) * scale;
+
+        const wheelRadius = w * 0.09 * scale;
+        const wheelY = Y(7);
+        const leftWheelX = X(3);
+        const rightWheelX = X(7);
+
+        // Car body
+        ctx.beginPath();
+
+        ctx.moveTo(X(1), Y(6));
+        ctx.lineTo(X(2), Y(6));
+
+        ctx.quadraticCurveTo(
+            X(2.5), Y(4.5),
+            X(3), Y(4)
+        );
+
+        ctx.quadraticCurveTo(
+            X(5), Y(3),
+            X(7), Y(4)
+        );
+
+        ctx.quadraticCurveTo(
+            X(7.5), Y(4.5),
+            X(8), Y(5)
+        );
+
+        ctx.lineTo(X(9), Y(5));
+        ctx.lineTo(X(9), Y(6));
+        ctx.lineTo(X(8.5), Y(6));
+        ctx.lineTo(X(8.5), Y(7));
+        ctx.lineTo(X(6.2), Y(7));
+        ctx.lineTo(X(3.8), Y(7));
+        ctx.lineTo(X(1.5), Y(7));
+        ctx.lineTo(X(1.5), Y(6));
+
+        ctx.closePath();
+
+        ctx.fillStyle = "red";
+        ctx.fill();
+
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 3 * scale;
+        ctx.stroke();
+
+
+        // Windows
+        ctx.beginPath();
+
+        ctx.moveTo(X(3.2), Y(4.2));
+        ctx.lineTo(X(4.8), Y(3.3));
+        ctx.lineTo(X(4.8), Y(4.8));
+        ctx.lineTo(X(3), Y(4.8));
+        ctx.closePath();
+
+        ctx.moveTo(X(5.2), Y(3.3));
+        ctx.lineTo(X(6.8), Y(4.2));
+        ctx.lineTo(X(7), Y(4.8));
+        ctx.lineTo(X(5.2), Y(4.8));
+        ctx.closePath();
+
+        ctx.fillStyle = "white";
+        ctx.fill();
+
+        ctx.lineWidth = 2 * scale;
+        ctx.stroke();
+
+
+        // Left wheel
+        ctx.beginPath();
+        ctx.arc(
+            leftWheelX, wheelY,
+            wheelRadius,
+            0, Math.PI * 2
+        );
+        ctx.fillStyle = "black";
+        ctx.fill();
+
+        // Left wheel hub
+        ctx.beginPath();
+        ctx.arc(
+            leftWheelX, wheelY,
+            w * 0.035 * scale,
+            0, Math.PI * 2
+        );
+        ctx.fillStyle = "gray";
+        ctx.fill();
+
+
+        // Right wheel
+        ctx.beginPath();
+        ctx.arc(
+            rightWheelX, wheelY,
+            wheelRadius,
+            0, Math.PI * 2
+        );
+        ctx.fillStyle = "black";
+        ctx.fill();
+
+        // Right wheel hub
+        ctx.beginPath();
+        ctx.arc(
+            rightWheelX, wheelY,
+            w * 0.035 * scale,
+            0, Math.PI * 2
+        );
+        ctx.fillStyle = "gray";
+        ctx.fill();
+
+
+        // Headlight
+        ctx.beginPath();
+        ctx.arc(
+            X(8.7), Y(5.5),
+            w * 0.025 * scale,
+            0, Math.PI * 2
+        );
+        ctx.fillStyle = "yellow";
+        ctx.fill();
+        ctx.stroke();
+
+
+        // Door
+        ctx.beginPath();
+        ctx.moveTo(X(5), Y(4.8));
+        ctx.lineTo(X(5), Y(6.5));
+        ctx.lineWidth = 2 * scale;
+        ctx.stroke();
+
+
+        // Door handle
+        ctx.beginPath();
+        ctx.moveTo(X(5.3), Y(5.2));
+        ctx.lineTo(X(5.7), Y(5.2));
+        ctx.stroke();
+    }
+
+
+    // Draw multiple cars using a loop
+    const numCars = 3;
+
+    for (let i = 0; i < numCars; i++) {
+        const cx = (w * (i + 0.5)) / numCars;
+        const cy = h / 2;
+        const scale = 0.3;
+
+        drawCar(cx, cy, scale);
+    }
+
+</script>
